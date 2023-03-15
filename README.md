@@ -1,3 +1,17 @@
+# Towards Continual Social Network Identification
+
+## Abstract
+Social networks have become most widely used channels for sharing images and videos, and discovering the social platform of origin of multimedia content is of great interest to the forensics community. Several techniques address this problem, however the rapid development of new social platforms, and the deployment of updates to existing ones, often render forensic tools obsolete shortly after their introduction. This effectively requires constant updating of methods and models, which is especially cumbersome when dealing with techniques based on neural networks, as trained models cannot be easily fine-tuned to handle new classes without drastically reducing the performance on the old ones -- a phenomenon known as catastrophic forgetting. Updating a model thus often entails retraining the network from scratch on all available data, including that used for training previous versions of the model. Continual learning refers to techniques specifically designed to mitigate catastrophic forgetting, hus making it possible to extend an existing model requiring no or a limited number of examples from the original dataset.
+In this paper, we investigate the potential of continual learning techniques to build an extensible social network identification neural network.
+We introduce a simple yet effective neural network architecture for Social Network Identification (SNI) and perform extensive experimental validation of continual learning approaches on it. Our results demonstrate that, although Continual SNI remains a challenging problem, catastrophic forgetting can be significantly reduced by only retaining a fraction of the original training data.
+
+## Authors
+ - Simone Magistri, simone.magistri@unifi.it
+ - Daniele Baracchi, daniele.baracchi@unifi.it
+ - Dasara Shullani, dasara.shullani@unifi.it
+ - Andrew D. Bagdanov, andrew.bagdanov@unifi.it
+ - Alessandro Piva, alessandro.piva@unifi.it
+
 ## Download Smart Data Bologna Dataset
 
 Please download **Smartphone images** from  http://smartdata.cs.unibo.it/datasets
@@ -37,39 +51,39 @@ mkdir /Scratch/incremental_dataset/IncrementalSmartDataBologna
 This is the overall dataset structure after the pre-processing steps.
 ```
 incremental_dataset
-└── IncrementalSmartDataBologna
-              ├── Images # Original Smart Data Bologna Images
-              ├── Info   # Information on the dataset
-              │   ├── train.txt                 # Image Train Split
-              │   ├── val.txt                   # Image Val Split    
-              │   ├── test.txt                  # Image Test Split
-              │   ├── train_crops.txt           # Patch Train Split
-              |   ├── val_crops.txt             # Patch Val Split     
-              │   ├── test_crops.txt            # Patch Test Split       
-              │   ├── train_crop_count.pickle   # Train Dictionary {Img_name:N_crops} 
-              │   ├── val_crop_count.pickle     # Val Dictionary {Img_name:N_crops}
-              |   ├── test_crop_count.pickle    # Test Dictionary {Img_name:N_crops}
-              |   ├── discarded_images.pkl      # Images discarded from the preprocessing
-              |   └── summary.csv               # statistics on the dataset
-              |
-              ├── Patches_256 # Image Patches 256 x 256 
-              |      |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
-              |      |                   |
-              |     ...             ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}.png
-              |                          |
-              |                         ...
-              ├── Histograms # Dct Histogram Computed Over Patches 256 x 256
-              |      |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
-              |      |                   |
-              |     ...                 ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}_hist.npy
-              |                          |
-              |                         ...
-              └── PrnuResidual # Prnu Residual computed over patches 256 x 256 
-                     |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
-                     |                   |
-                    ...               ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}_res.npy
-                                         |
-                                        ...     
+└─ IncrementalSmartDataBologna
+    ├── Images # Original Smart Data Bologna Images
+    ├── Info   # Information on the dataset
+    │   ├── train.txt                 # Image Train Split
+    │   ├── val.txt                   # Image Val Split    
+    │   ├── test.txt                  # Image Test Split
+    │   ├── train_crops.txt           # Patch Train Split
+    |   ├── val_crops.txt             # Patch Val Split     
+    │   ├── test_crops.txt            # Patch Test Split       
+    │   ├── train_crop_count.pickle   # Train Dictionary {Img_name:N_crops} 
+    │   ├── val_crop_count.pickle     # Val Dictionary {Img_name:N_crops}
+    |   ├── test_crop_count.pickle    # Test Dictionary {Img_name:N_crops}
+    |   ├── discarded_images.pkl      # Images discarded from the preprocessing
+    |   └── summary.csv               # statistics on the dataset
+    |
+    ├── Patches_256 # Image Patches 256 x 256 
+    |      |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
+    |      |                   |
+    |     ...             ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}.png
+    |                          |
+    |                         ...
+    ├── Histograms # Dct Histogram Computed Over Patches 256 x 256
+    |      |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
+    |      |                   |
+    |     ...                 ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}_hist.npy
+    |                          |
+    |                         ...
+    └── PrnuResidual # Prnu Residual computed over patches 256 x 256 
+           |──${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_crops
+           |                   |
+          ...               ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName}_${CropID}_res.npy
+                               |
+                              ...     
 
 ```
 
@@ -82,7 +96,7 @@ Histograms=$FACIL_BOLOGNA_PATH/Histograms/,
 PrnuResidual=$FACIL_BOLOGNA_PATH/PrnuResidual/. 
 ```
 
-The structure of directories Patches_256, Histograms, PrnuResidual is the same. They contain  one directory per image and the name of each directory is a pointer to the original image in the SDB dataset. A single directory contains the set of patch images for the full image (Patches_256), the set of patch histogram for the full Image (Histograms) and the set of patch prnu residuals for the full image (PrnuResidual). The nomenclature of the folder is taken from the file summary.csv. See Pre-process Data for more details.
+The structure of directories `Patches_256`, `Histograms`, `PrnuResidual` is the same. They contain  one directory per image and the name of each directory is a pointer to the original image in the SDB dataset. A single directory contains the set of patch images for the full image (`Patches_256`), the set of patch histogram for the full Image (`Histograms`) and the set of patch prnu residuals for the full image (`PrnuResidual`). The nomenclature of the folder is taken from the file `summary.csv`. See Pre-process Data for more details.
 
 ## Pre-Process Data
 The following operations should be performed sequentially.
@@ -93,7 +107,7 @@ The following operations should be performed sequentially.
 python data_preprocessing/get_dataset_summary_1.py 
 ```
 
-This python script copy the images from $BOLOGNA_PATH  to $Images  and generate a file  $Info/summary.csv with the information about the dataset:
+This python script copy the images from `$BOLOGNA_PATH`  to $Images  and generate a file  `$Info/summary.csv` with the information about the dataset:
 
 - **FolderDevice**: Identifier of the device which captured the images in the SmartDataBolognaDataset. These devices are used to compute the split between train,val, test.
 - **SocialNetwork**: Social Network Class
@@ -113,9 +127,6 @@ ${FolderDevice}_${SocialNetwork}_${CameraType}_${OriginalImageName} # OriginalIm
 
 
 
-
- 
-
 2) Split the  dataset in train-val-test
 
 ```
@@ -123,17 +134,17 @@ python data_preprocessing/split_train_val_test_2.py
 ```
 
 Generate three files with the list of train, val, test images:   
-- $Info/train.txt
-- $Info/val.txt
-- $Info/test.txt 
+- `$Info/train.txt`
+- `$Info/val.txt`
+- `$Info/test.txt`
 
- The columns of the three files represent respectively: the image name, the SocialNetworkID, UniqueID (unique identifier of the image in the dataset). Furthermore,  in $Info there  are the files relative to the train, val, test patches (train_crops.txt, val_crops.txt, test_crops.txt). The structure is the same.
+ The columns of the three files represent respectively: the image name, the SocialNetworkID, UniqueID (unique identifier of the image in the dataset). Furthermore,  in $Info there  are the files relative to the train, val, test patches (`train_crops.txt`, `val_crops.txt`, `test_crops.txt`). The structure is the same.
  
 Finally it creates the dictionaries:
 
-- $Info/train_crop_count.pickle
-- $Info/val_crop_count.pickle
-- $Info/test_crop_count.pickle
+- `$Info/train_crop_count.pickle`
+- `$Info/val_crop_count.pickle`
+- `$Info/test_crop_count.pickle`
 
  which contain the information of the  number of crops per image in train, val, test. 
 
@@ -143,7 +154,7 @@ Finally it creates the dictionaries:
 python data_preprocessing/generate_crops_3.py --patch_size 256 
 ```
 
-It creates a folder $FACIL_BOLOGNA_PATH/Patches_256 with the image patches of size 256 x 256.  
+It creates a folder `$FACIL_BOLOGNA_PATH/Patches_256` with the image patches of size 256 x 256.  
 
 4)  Generate the histogram and the prnu residual for the comparison with the network of Amerini et al. 
 ```
@@ -210,8 +221,10 @@ Most of the code is based on FACIL. Please refer to  https://github.com/mmasana/
 If you use this code please cite 
 ```
 @article{magistri,
-
-
+  title={Towards Continual Social Network Identification},
+  author={Simone Magistri, Daniele Baracchi, Dasara Shullani, Andrew D. Bagdanov, and Alessandro Piva},
+  journal={to appear in 11th International Workshop on Biometrics and Forensics (IWBF)},
+  year={2023}
 
 }
 
