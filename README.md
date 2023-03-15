@@ -1,7 +1,7 @@
 # Towards Continual Social Network Identification
 
 ## Abstract
-Social networks have become most widely used channels for sharing images and videos, and discovering the social platform of origin of multimedia content is of great interest to the forensics community. Several techniques address this problem, however the rapid development of new social platforms, and the deployment of updates to existing ones, often render forensic tools obsolete shortly after their introduction. This effectively requires constant updating of methods and models, which is especially cumbersome when dealing with techniques based on neural networks, as trained models cannot be easily fine-tuned to handle new classes without drastically reducing the performance on the old ones -- a phenomenon known as catastrophic forgetting. Updating a model thus often entails retraining the network from scratch on all available data, including that used for training previous versions of the model. Continual learning refers to techniques specifically designed to mitigate catastrophic forgetting, hus making it possible to extend an existing model requiring no or a limited number of examples from the original dataset.
+Social networks have become most widely used channels for sharing images and videos, and discovering the social platform of origin of multimedia content is of great interest to the forensics community. Several techniques address this problem, however the rapid development of new social platforms, and the deployment of updates to existing ones, often render forensic tools obsolete shortly after their introduction. This effectively requires constant updating of methods and models, which is especially cumbersome when dealing with techniques based on neural networks, as trained models cannot be easily fine-tuned to handle new classes without drastically reducing the performance on the old ones -- a phenomenon known as *catastrophic forgetting*. Updating a model thus often entails retraining the network from scratch on all available data, including that used for training previous versions of the model. Continual learning refers to techniques specifically designed to mitigate catastrophic forgetting, hus making it possible to extend an existing model requiring no or a limited number of examples from the original dataset.
 In this paper, we investigate the potential of continual learning techniques to build an extensible social network identification neural network.
 We introduce a simple yet effective neural network architecture for Social Network Identification (SNI) and perform extensive experimental validation of continual learning approaches on it. Our results demonstrate that, although Continual SNI remains a challenging problem, catastrophic forgetting can be significantly reduced by only retaining a fraction of the original training data.
 
@@ -37,7 +37,7 @@ Please download **Smartphone images** from  http://smartdata.cs.unibo.it/dataset
   pip install opencv-python
   ```
 ## Set data path
-In  "path_variables.py", set the paths where the Smart Data Bologna (SDB) Dataset is stored, and where the preprocessed dataset will be saved.
+In  `path_variables.py`, set the paths where the Smart Data Bologna (SDB) Dataset is stored, and where the preprocessed dataset will be saved.
 ```
 BOLOGNA_PATH =  "/images/images/forensic_datasets/Container_Datasets/SmartDataBologna
 FACIL_BOLOGNA_PATH = "/Scratch/incremental_dataset/IncrementalSmartDataBologna" 
@@ -114,7 +114,7 @@ This python script copy the images from `$BOLOGNA_PATH`  to $Images  and generat
 - **Downloaded**: If the Social Network is downloaded. Some Social Network contains only the original images and they will be discarded.
 - **SocialNetworkID**: Integer identifier of the social network  class
 - **CameraType**: Camera type which captured the image (ofront, rear, ...)
-- **OriginalImagePath**: Original path of the image in $BOLOGNA_PATH
+- **OriginalImagePath**: Original path of the image in `$BOLOGNA_PATH`
 - **NewImageName**: New name of the image after preprocessing. It contains some information about the images. The new image name  is the following: 
 
 ```
@@ -202,7 +202,7 @@ bash script/joint_incremental.sh
 
 The scripts create a folder in the path specified by the argument **--results-path** . Each result folder contains:
 
-- **models** : folder containing the models trained after each task. The models are saved in the format  task_{TASK_ID}.ckpt 
+- **models** : folder containing the models trained after each task. The models are saved in the format  `task_{TASK_ID}.ckpt`
 - **results** : patch and image accuracy collected.
   - **acc_tag_*.txt**, **acc_taw_*.txt** :  accuracy task agnostic and task aware after each task. An element **(i,j)** of these matrices is the accuracy tag (or taw) of task **j** after learned task **i**. 
   - **avg_acc_tag_*.txt**, **avg_acc_taw_*.txt** :  average accuracy task agnostic and task aware. An element **i** of these vectors is  the average accuracy after learned task i. The average accuracy learned after the last task is reported in the tables of the paper.
@@ -214,7 +214,7 @@ The scripts create a folder in the path specified by the argument **--results-pa
 
 
 
-Most of the code is based on FACIL. Please refer to  https://github.com/mmasana/FACIL  for a more detailed explanation of the  continual learning approaches or/and of the whole framework.
+Most of the code is based on FACIL. Please refer to  *https://github.com/mmasana/FACIL*  for a more detailed explanation of the  continual learning approaches or/and of the whole framework.
 
 ## CITE
 
