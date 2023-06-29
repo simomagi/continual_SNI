@@ -220,13 +220,15 @@ Most of the code is based on FACIL. Please refer to  *https://github.com/mmasana
 
 If you use this code please cite 
 ```
-@article{magistri,
-  title={Towards Continual Social Network Identification},
-  author={Simone Magistri, Daniele Baracchi, Dasara Shullani, Andrew D. Bagdanov, and Alessandro Piva},
-  journal={to appear in 11th International Workshop on Biometrics and Forensics (IWBF)},
-  year={2023}
-
-}
+@INPROCEEDINGS{10157835,
+  author={Magistri, Simone and Baracchi, Daniele and Shullani, Dasara and Bagdanov, Andrew D. and Piva, Alessandro},
+  booktitle={2023 11th International Workshop on Biometrics and Forensics (IWBF)}, 
+  title={Towards Continual Social Network Identification}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-6},
+  doi={10.1109/IWBF57495.2023.10157835}}
 
 ```
 ```
