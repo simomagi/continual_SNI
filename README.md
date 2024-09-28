@@ -1,4 +1,11 @@
-# Towards Continual Social Network Identification
+# Towards Continual Social Network Identification (IWBF 2023)
+
+![](images/cl_social_final.png)
+
+
+This repository contains all code needed to reproduce the experimental results for the paper
+*Towards Continual Social Network Identification* [(link)](https://ieeexplore.ieee.org/abstract/document/10157835), presented at **International Workshop on Biometrics and Forensics (IWBF 2023)**.
+
 
 ## Abstract
 Social networks have become most widely used channels for sharing images and videos, and discovering the social platform of origin of multimedia content is of great interest to the forensics community. Several techniques address this problem, however the rapid development of new social platforms, and the deployment of updates to existing ones, often render forensic tools obsolete shortly after their introduction. This effectively requires constant updating of methods and models, which is especially cumbersome when dealing with techniques based on neural networks, as trained models cannot be easily fine-tuned to handle new classes without drastically reducing the performance on the old ones -- a phenomenon known as *catastrophic forgetting*. Updating a model thus often entails retraining the network from scratch on all available data, including that used for training previous versions of the model. Continual learning refers to techniques specifically designed to mitigate catastrophic forgetting, hus making it possible to extend an existing model requiring no or a limited number of examples from the original dataset.
